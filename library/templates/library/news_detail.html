@@ -1,0 +1,15 @@
+{% extends "library/base.html" %}
+
+{% block content %}
+  <section>
+    <div class="container">
+      <div class="card" style="width:auto">
+        <img class="card-img-top" src="{{news.photo.url}}" alt="News image">
+        <div class="card-img-overlay">
+          <h4 class="card-title text-bg-success">{{ news.title }}</h4>
+          <p class="card-text text-bg-success">{{ news.content }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
