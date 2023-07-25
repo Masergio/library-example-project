@@ -1,7 +1,7 @@
 from aiogram import Bot, Dispatcher, types
 
 from django.conf import settings
-from tg_bot.models import Chat
+from tg_bot.models import Chat, Message
 
 # Initialize bot and dispatcher
 bot = Bot(token=settings.BOT_TOKEN)
@@ -20,7 +20,7 @@ async def send_welcome(message: types.Message):
 
 @dp.message_handler(regexp='(^cat[s]?$|puss)')
 async def show_cats(message: types.Message):
-    with open('data/cat.jpg', 'rb') as photo:
+    with open('data/cat.jpg', 'rb') as photo:  # TODO: fix this
         await message.reply_photo(photo, caption='Cats are here 😺')
 
 
@@ -28,3 +28,13 @@ async def show_cats(message: types.Message):
 async def echo(message: types.Message):
     print(message)
     await message.answer(message.text[::-1])
+
+
+async def broadcast(msg, parce_mode=None, photo=None):
+    users = Chat.objects.all()
+    async for user in users:
+        if photo:
+            await bot.send_photo(chat_id=user.chat_id, photo=photo)
+        await bot.send_message(chat_id=user.chat_id, text=msg, parse_mode=parce_mode)
+
+        await Message.objects.acreate(chat_id=user.chat_id, username=msg[:1000])
