@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os.path
 from pathlib import Path
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qk5o5nd8wbs%7^eo&(7y*off$0dl_d+@%#o!x8y-2zv211%$s5'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = []
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
 
     'library',
+    'tg_bot',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -141,3 +144,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login'
+
+
+BOT_TOKEN = config('BOT_TOKEN', default="")
